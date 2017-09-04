@@ -8,12 +8,24 @@ var rad = 0
 var blau = 0
 var gran = 0
 var alpi = 0
-var x
-var y
+var x = 0
+var y = 0
+var sensitivity
+
+var video_w = 600;
+var video_h = 400;
+var threshold = 40;
+
+var canvas
 function setup() {
-  createCanvas(400, 400)
+  canvas = createCanvas(video_w, video_h)
+  canvas.position((windowWidth - width) / 2, (windowHeight - height) / 2)
   video = createCapture(VIDEO)
-  video.size(400, 400)
+  video.size(video_w / 10, video_h / 10)
+  video.position(windowWidth / 2 + width / 2, windowHeight / 2 + height/2 - video.height  )
+  sensitivity = createSlider(1, 200, 30, 1)
+  sensitivity.position(20, 30)
+
 }
 function getclr(xp, yp) {
   x = floor(constrain(xp, 0, width))
@@ -21,77 +33,51 @@ function getclr(xp, yp) {
   px = (x + y * width) * 4
   rad = px
   gran = rad + 1
-  blau = gran + 1
-  alpi = blau + 1
+  blau = rad + 2
   re = pixels[rad]
   gr = pixels[gran]
   bl = pixels[blau]
-  al = pixels[alpi]  // console.log(re);
-  // console.log(gr);
-  // console.log(bl);
+
+
 }
 function draw() {
-  background(255)
-  image(video, 0, 0, 400, 400)  // xpx=floor(constrain(mouseX,0,width))
-  // ypx=floor(constrain(mouseY,0,height))
-  // px=(xpx+ypx*width)*4
-  // r=pixels[px]
-  // g=pixels[px+1]
-  // b=pixels[px+2]
-  // a=pixels[px+3]
-  // console.log(r);
-  // console.log(ypx);
-  // getclr()
+  threshold = sensitivity.value()
+  background(0)
+  image(video, 0, 0, video_w, video_h)
   r = re
   g = gr
   b = bl
   loadPixels()
-  for (i = 0; i < width * height; i++)  // { found=false
-  pixel = i * 4
-  red = pixel + 1
-  green = pixel + 1
-  blue = pixel + 2
-  alpha = pixel + 3
-  off = 1
-  simm = dist(r, g, b, pixels[red], pixels[green], pixels[blue])  //  console.log(simm);
-  // if(simm<10)
-  // pixels[alpha]=255
-  //wall blue 66,119,133
-  //
-  // yellow 	193, 188, 115
-  // if(pixels[red]>r-off && pixels[red]<r+off)
-  // {found=true}else{found=false}
-  // pixels[red]=0
-  // pixels[alpha]=255
-  // if(pixels[green]>g-off && pixels[green]<g+off)
-  // {found=true}else{found=false}
-  // pixels[green]=0
-  // pixels[alpha]=0
-  // if(pixels[blue]>b-off && pixels[blue]<b+off)
-  // {found=true}else{found=false}
-  // pixels[blue]=0
-  // pixels[alpha]=0
-  // if(pixels[alpha]<20)
-  // pixels[alpha]=255
-  // if(found=true)
-  // pixels[alpha]=255
-  // if(pixels[red]>r-off && pixels[red]<r+off){
-  //   if(pixels[green]>g-off && pixels[green]<g+off){
-  //     if(pixels[blue]>b-off && pixels[blue]<b+off){
-  //       pixels[alpha]=255
-  //     }
-  //   }
-  // }
+  for (i = 0; i < width * height; i++) {
+    pixel = i * 4
+    red = pixel
+    green = pixel + 1
+    blue = pixel + 2
+    alpha = pixel + 3
+    off = 1
+    color_diffrence = floor(dist(r, g, b, pixels[red], pixels[green], pixels[blue]))
+    if (color_diffrence < threshold) {
+      pixels[red] = 0
+      pixels[green] = 0
+      pixels[blue] = 0
+      pixels[alpha] = 0
+    }
+    
+
+  }
+  
   updatePixels()
+  // keyPressed();
+
+  if (keyIsDown(LEFT_ARROW))
+    sensitivity.value(sensitivity.value()+3)
+  console.log(sensitivity.value())
+
+  if (keyIsDown(RIGHT_ARROW))
+    sensitivity.value(sensitivity.value()-3)
 }
-}// }
-//
 
 function mouseClicked() {
-getclr(mouseX, mouseY)// console.log("afdda"+mouseX+":"+mouseY);
-}// setpix()
+  getclr(mouseX, mouseY)
+}
 
-/*
-Exception: SyntaxError: expected expression, got '}'
-@Scratchpad/1:86
-*/
