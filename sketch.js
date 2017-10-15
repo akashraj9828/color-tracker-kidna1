@@ -16,6 +16,8 @@ var video_w = 600;
 var video_h = 400;
 var threshold = 40;
 
+var pause=false;
+
 var canvas
 function setup() {
   canvas = createCanvas(video_w, video_h)
@@ -23,8 +25,11 @@ function setup() {
   video = createCapture(VIDEO)
   video.size(video_w / 10, video_h / 10)
   video.position(windowWidth / 2 + width / 2, windowHeight / 2 + height/2 - video.height  )
-  sensitivity = createSlider(1, 200, 30, 1)
+  sensitivity = createSlider(100, 200, 30, 1)
   sensitivity.position(20, 30)
+
+  
+  
 
 }
 function getclr(xp, yp) {
@@ -40,7 +45,20 @@ function getclr(xp, yp) {
 
 
 }
+
+function rectangle(){
+  // text("Tracking color:",800,150);
+  push()
+  fill(re,gr,bl);
+  stroke(0)
+  strokeWeight(4)
+  rect(340,150,20,20)
+  pop()
+}
 function draw() {
+
+ rectangle();
+
   threshold = sensitivity.value()
   background(0)
   image(video, 0, 0, video_w, video_h)
@@ -79,5 +97,17 @@ function draw() {
 
 function mouseClicked() {
   getclr(mouseX, mouseY)
+}
+
+function keyPressed(){
+  if(key=='p'||key=='P'){
+    if(pause){
+      pause=false;
+      loop();
+    }else if(!pause){
+      pause=true;
+      noLoop();
+    }
+  }
 }
 
