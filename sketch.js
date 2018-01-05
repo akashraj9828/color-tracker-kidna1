@@ -21,12 +21,16 @@ var pause=false;
 var canvas
 function setup() {
   canvas = createCanvas(video_w, video_h)
-  canvas.position((windowWidth - width) / 2, (windowHeight - height) / 2)
+  // canvas.position((windowWidth - width) / 2, (windowHeight - height) / 2)
+  canvas.id("video")
+  canvas.parent("video-container")
   video = createCapture(VIDEO)
   video.size(video_w / 10, video_h / 10)
-  video.position(windowWidth / 2 + width / 2, windowHeight / 2 + height/2 - video.height  )
+  video.hide();
+  // video.position(windowWidth / 2 + width / 2, windowHeight / 2 + height/2 - video.height  )
   sensitivity = createSlider(100, 200, 30, 1)
-  sensitivity.position(20, 30)
+  // sensitivity.position(20, 30)
+  sensitivity.parent("controls")
 
   
   
@@ -88,11 +92,11 @@ function draw() {
   // keyPressed();
 
   if (keyIsDown(LEFT_ARROW))
-    sensitivity.value(sensitivity.value()+3)
-  console.log(sensitivity.value())
+    sensitivity.value(sensitivity.value()-3)
+  
 
   if (keyIsDown(RIGHT_ARROW))
-    sensitivity.value(sensitivity.value()-3)
+    sensitivity.value(sensitivity.value()+3)
 }
 
 function mouseClicked() {

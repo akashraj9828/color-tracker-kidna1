@@ -1,0 +1,47 @@
+body{
+
+    background: teal;
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+div#stats{
+    margin: 0px;
+    position: relative;
+    float: right;
+}
+
+div#video-container{
+    background-color: darkslategrey;
+ 
+    text-align: center;
+}
+
+canvas#video{
+    position: relative;
+    padding: 8px;
+    background: #786e6e;
+    border: inset;
+    border-color: #fff;
+}
+
+video{
+    padding:0px;
+    height: 20%;
+    width: 20%;
+}
+
+div#controls{
+
+    padding-bottom: 10px;
+}
+
+input{
+    
+    position: relative;
+    /*! margin-left: auto !important; */
+    margin-right: auto !important;
+    width: 165px;
+    margin: 0 auto;
+}
